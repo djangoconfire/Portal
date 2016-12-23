@@ -1,0 +1,46 @@
+.application_container{
+	margin-top:100px;
+}
+.no_application{
+	color:grey;
+}
+
+
+
+table {
+      border-collapse: separate;
+      border-spacing: 0;
+  }
+
+th,
+td {
+  padding: 10px 15px;
+
+}
+
+thead {
+  background: #395870;
+  color: #fff;
+}
+
+tbody tr:nth-child(even) {
+  background: #f0f0f2;
+}
+tr{
+    height:40px;
+}
+
+
+th {
+  font-weight: bold;
+}
+
+
+td {
+  border-bottom: 1px solid #cecfd5;
+}
+
+
+/*td:first-child {
+  border-left: 1px solid #cecfd5;
+}*/

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/user_profile/dashboard.css' %}">
+{% endblock %}
+
+{% block js_block %}
+    <script type="text/javascript" src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}    
+
+{% block content %}
+	
+	<div class="container application_container">
+
+		<div class="col-md-3 input-group pull-right form-group" >
+            <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+            <input type="text" class="filter form-control" name="q" placeholder="What you looking for ?">
+        </div>
+
+	  <!--   <form class="form-inline" role="form">
+	        <div class="input-group" style="width:400px;float:right;">
+	            <input type="text" ng-model="query" class="form-control" name="q" placeholder="What you looking for ?">
+	            <span class="input-group-btn">
+	              <button type="submit" class="btn btn-warning"><span class="glyphicon glyphicon-search"></span></button>
+	            </span>
+	        </div>
+	    </form> -->
+
+		{% ifequal job_applications|length 0 %}
+		    <h3 class="no_application"> You have't applied any job </h3>
+		{% else %}  
+
+	     	<h4 style="color:orange;margin-top:20px;">Applications</h4>
+
+			<table class="table application_table ng-controlller="dashboard">
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Profile</th>
+						<th>Company</th>
+						<th>Application Status</th>
+					</tr>	
+				</thead>
+
+				<tbody>
+					{% for application in job_applications %}
+						<tr class="searchable">
+							<td>{{application.job.pub_date |date:"M d, Y"}}</td>
+							<td>{{application.job.company.company_name}}</td>
+							<td>{{application.job.job_title}}</td>
+
+						{% if application.is_applied %}
+							<td style="color:grey;">Applied</td>   
+
+					
+						{% elif application.action_by_company == 'shortlisted' %}
+						
+							<td style="color:grey;">Shortlisted</td>   
+
+
+						{% else  %}
+							<td style="color:grey;">Rejected</td>   
+						{% endif %}
+						
+					{% endfor %}	
+				</tbody>	
+			</table> 
+		{% endifequal %}
+	</div>        
+
+{% endblock %}

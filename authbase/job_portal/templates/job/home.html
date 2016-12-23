@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="{% static 'css/job.css' %}">
+
+{% endblock %}
+
+{% block js_block %}
+    <script type="text/javascript" src="{% static 'js/job.js' %}"></script>
+
+    <script type='text/javascript'>
+        $(document).ready(function()
+        {   
+            //alert('inside document');
+            $('#search_data').unbind('submit').submit(function(event)
+            {   
+                event.preventDefault();
+                var form_data=$('#search_data').serializeArray();
+                //alert(form_data);
+                form_data = JSON.stringify(form_data);
+                alert( form_data)
+                $.ajax(
+                {
+                    url:'/job/search/',
+                    type:'post',
+                    data:{form_data:form_data},
+                    success: function(data)
+                    {
+                        if(data.length==0){
+                            var html_div="<div class='well' style='margin-top:30px;width:100%;font-weight:20px;background-color:#eee;'>No Profile matching</div>"
+                        }
+                        else
+                        {
+                            for(i=0;i<data.length;i++)
+                            {
+                               html_div = "<div class='job_detail'><h4 style='margin-left:65px;'><a style='color:green;' href='/job/"+ data[i][10] +"/" + data[i][9] + "/job_detail/'>" + data[i][0] + " ( " + data[i][3] + " - " +  data[i][4] + "Years of Experience )</a></h4><img src='" + data[i][8] + "'style='width:50px;height:30px;border-radius:60px;margin-top:-10px;'><strong style='margin-left:30px;''><a href='/company/" + data[i][10] + "/'>" + data[i][2] + "</a><i class='fa fa-map-marker' style='margin-left:10px;'></i><span style='color:grey;margin-left:5px;'>"+ data[i][5] + "</span><p><strong style='margin-left:85px;'></strong> KeySkills: <span style='color:grey;'>"+ data[i][6] + "</span><p style='margin-left:80px;color:grey;'>Job Description :-" + data[i][7] + "</p></strong><a href='"+ data[i][11] + "' class='btn btn-info btn-view-more'>View More</a><hr style='color:blue;'>" ;
+                            }
+                        }
+
+                        //alert("loop executed successfully");
+
+                        html_div+= "</table></div>";
+                        //alert("Before adding form_data to html");
+                        $('#form_data').html(html_div);
+                        //alert("After adding form_data");
+                    }
+                });
+          
+            });
+        }); 
+    </script>
+{% endblock %}
+
+
+
+{% block content %}
+    
+    <div class="col-md-3 input-group pull-right form-group" >
+        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+        <input type="text" class="filter form-control" placeholder="What you looking for?">
+    </div>
+
+    <div class="container matching_profile_container" style="margin-top:10px;">
+        <div class="well matching_profile_wrapper">
+            <h4 style="color:orange;font-size:20px;">Search Jobs</h4>
+            <form method="get" id='search_data' action="#" enctype="multipart/form-data" class="form-inline" role="form">
+            {% csrf_token %}
+
+            {% for field in form.visible_fields %}
+                <div class="form-group{% if field.errors %} has-error{% endif %}">
+                    <label for="{{ field.label }}">{{ field.label }}</label><br/>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <span class="help-block">{{ field.help_text|safe }}</span>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <label class="control-label">{{ error }}</label>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+
+                <div class="form-group">
+                    <button type="submit" style="float:right;" class="btn btn-warning btn-apply-filter">Search</button>
+                </div>
+
+            </form>
+        </div>
+        <div id="form_data"></div>
+    </div>
+                  
+{% endblock %}

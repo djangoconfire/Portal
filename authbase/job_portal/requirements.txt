@@ -1,0 +1,9 @@
+Django==1.8.6
+django-autoslug==1.9.3
+django-crispy-forms==1.6.0
+django-markdown==0.8.4
+django-taggit==0.20.0
+django-taggit-autosuggest==0.3.0
+django-tinymce==2.3.0
+Markdown==2.6.7
+Pillow==3.4.2

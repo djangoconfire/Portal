@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+
+Job Description|{{job.company.company_name}}
+
+{% endblock title %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/jobs.css' %}">
+     "{{form.media}}"
+
+{% endblock %}
+
+{% block js_block %}
+    <script>
+        function sendform_apply(application_id){
+            //alert('inside selection procedure.');
+            // alert(application_id)
+            return function(event)
+            {
+                event.preventDefault();
+                // alert("Inside function");
+                $.ajax({
+
+                    url : '/job/apply_for_job/',
+                    type:'post',
+                    data: {'id':application_id},
+                    success: function(response){
+                
+                        alert("Inside response");
+                        var jsondata=response;
+                        if(typeof jsondata=='object')
+                        {
+                            if(jsondata['success']=='True')
+                            {
+                                $('#select-'+ application_id).css('background-color','green');
+                                $('#reject-'+application_id).css('background-color','#337ab7');
+
+                                //alert("ajax done");
+
+                            }
+                            else
+                            {
+                                alert("Not a jsonresponse");
+                                alert(jsondata['exception']);
+                            }  
+                        }             
+                        else
+                        {
+                            alert("response having no success attribute");
+                        }
+
+                     }
+                });    
+            
+             }
+        }
+
+        $(document).ready(function(){
+
+            var application_id = JSON.parse(" {{ application_id|escapejs }}");
+        
+            $('#select-'+application_id).on("click",sendform_apply(application_id));
+
+        });
+
+    </script>
+
+{% endblock %}
+
+
+{% block content %}
+
+   <div class="container job_detail_container">
+        <div class="container job_detail_wrapper">
+            <div class="row">
+                <div class="col-sm-4">
+                    <h4 style="margin-top:40px;color:green;text-decoration:underline;">{{application.job.job_title}}</h4>
+                    <strong style="margin-left:20px;  "><a href="{{application.job.company.get_absolute_url}}">{{application.job.company.company_name}}</a></strong><br/>
+                    
+                    <small style="color:grey;margin-left:40px;">
+                            <span><i class="fa fa-briefcase"></i>{{application.job.job_min_exp}} -{{application.job.job_max_exp}}(Years)</span>
+
+                            <span style="margin-left:60px;"><i class="fa fa-map-marker"></i>&nbsp;&nbsp;&nbsp;{{application.job.job_location |title}}</span>
+
+                    </small>
+                     
+                    
+                    
+                </div>
+
+                <div class="col-sm-6">
+                    <img src="{{application.job.company.company_logo.url}}" style="width:200px;height:40px;margin-top:80px;">
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+
+                   <strong style="color:grey">Key Skills:</strong>&nbsp;&nbsp;&nbsp;{{application.job.job_skills |title}}
+
+                   <div class="apply_job">
+                      
+
+                        {% if application.is_applied %}
+                            <td><a href = "#" class = "btn btn-success btn-disabled">Applied</a></td>
+                        {% else %}
+
+                            <td><a href = "#" id="select-{{application_id}}" class = "btn btn-info">Apply</a></td>
+                        {% endif %}
+                    </div>    
+                      
+
+                  <strong class="image-responsive" style="margin-top:20px;height:auto;color:grey;font-size:20px;">Description</strong>
+                  <p style="margin-top:5px;">{{application.job.job_desc}}</p>   
+                    
+                    
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+{% endblock %}
+

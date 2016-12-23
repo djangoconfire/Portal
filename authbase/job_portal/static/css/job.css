@@ -1,0 +1,46 @@
+.matching_profile_wrapper{
+	margin-top:100px;
+	padding:10px;
+}
+
+.matching_profile_wrapper.btn-apply-filter{
+	float:right;
+}
+
+.job_detail{
+	width:800px;
+    border-radius: 5px;
+    margin:10px auto 10px auto;
+    height: 150px;
+    background-color: #fafafa;
+    box-shadow: 5px 0px 0px 0px;
+    padding:10px;
+}
+
+
+.btn-view-more{
+	margin-top:-130px;
+	float:right;
+}
+
+.btn-apply{
+	margin-top:10px;
+	width:400px;
+}
+
+
+.posting_new_job_form .posting_new_job_wrapper{
+	width:80%;
+	margin:20px auto;
+}
+
+.posting_new_job_form .job_heading{
+	text-decoration: underline;
+}
+
+
+.wmd-panel{
+    margin-left:0px !important;
+    margin-right:0px !important;
+    
+}

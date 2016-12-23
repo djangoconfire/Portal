@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/company/company.css' %}">
+  
+
+{% endblock %}
+
+{% block js_block %}
+  
+{% endblock %}
+
+{% block content %}
+    <div class="container company_profile_form">
+        <h3 style="text-decoration:underline;color:orange;text-align:center;">Company Profile</h3>
+     
+        <div class="company_profile_container">
+            <div class="company_profile_wrapper">
+                <div class="row"> 
+                    <div class="col-md-2"> 
+                        <img style="width:120px;height:40px;"src="{{instance.company_logo.url}}" alt="company logo">
+                    </div>
+
+                    <div class="col-md-6" style="display:inline-block;">
+                        <h4>{{instance.company_name}}(<strong style="color:green;">{{instance.company_website}})</strong></h4><br/>
+                    </div>
+
+                    <div class="col-md-4">
+                        <h4 style="text-decoration:underline;">Contact us</h4>
+                         <strong>Mob-</strong><small style="color:green">{{instance.contact_no}}</small><br/>
+                         <strong>Email</strong>-<small style="color:green">{{instance.email}}</small>
+                    </div>
+                </div>
+
+                <div class="row" > 
+                    <div class="col-md-12" >
+                        <h4 style="text-decoration:underline;font-weight:bolder;">Description</h4>
+                        <span class="company_desc img">{{instance.get_content_as_markdown|safe}}</span>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
